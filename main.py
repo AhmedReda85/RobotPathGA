@@ -36,3 +36,5 @@ class Chromosome:
                 penalty+=10
             elif (x,y==goal):
                 self.fitness=1/(1+penalty)
+                return
+            
