@@ -1,10 +1,29 @@
 import numpy as np
 import random
 
-start=(0,0)
-goal=(8,6)
-grid_size=15
-obstacle_ratio=(0.2)
+def get_user_input():
+    grid_size=int(input("Enter the grid size : "))
+    start_x=int(input("Enter the start position X : "))
+    start_y=int(input("Enter the start position Y : "))
+    goal_x=int(input("Enter the goal position X : "))
+    goal_y=int(input("Enter the goal position Y : "))
+    obstacle_ratio=float(input("Enter obstacle ratio From 0.0 till 0.99: "))
+
+    start=(start_x,start_y)
+    goal=(goal_x,goal_y)
+    return start, goal, grid_size, obstacle_ratio
+
+start, goal, grid_size, obstacle_ratio = get_user_input()
+
+if not(0<=start[0]<grid_size and 0<=start[1]<grid_size):
+    print("Sorry You Entered a wrong start coordinates, try Agin \n")
+    get_user_input()
+if not(0<=goal[0]<grid_size and 0<=goal[1]<grid_size):
+    print("Sorry You Entered a wrong Goal coordinates, try Agin \n")
+    get_user_input()
+if not(0.0<=obstacle_ratio <=0.99):
+    print("Sorry You Entered a wrong Obstacle Ratio, try Agin \n")
+    get_user_input()
 
 def get_fitness(individual):
     return individual.fitness
