@@ -40,8 +40,6 @@ Input the grid size, start point, goal point, and obstacle ratio.
 2. **Start Position**: Enter the starting coordinates (x, y).
 3. **Goal Position**: Enter the goal coordinates (x, y).
 4. **Obstacle Ratio**: Set the ratio of obstacles in the grid (between 0 and 1).
-5. **Generate Grid**: Click to create the grid with specified parameters.
-6. **Start Path Planning**: Click to begin the pathfinding simulation.
-
+   
 # Contributions
 Feel free to contribute! Open an issue or submit a pull request if you have suggestions or improvements.
