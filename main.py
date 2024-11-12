@@ -83,11 +83,10 @@ class Chromosome:
 
     def mutate(self):
         if random.random() < mutation_rate:
-            index=random.randint(0,len(self.path) - 1)
-            new_move=random.choice(moves)
-            while new_move==self.path[index]:
-                new_move=random.choice(moves)
-            self.path[index]=new_move
+            segment_length = random.randint(1, 5)
+            start_index = random.randint(0, len(self.path) - segment_length)
+            end_index = start_index + segment_length
+            self.path[start_index:end_index] = [random.choice(moves) for _ in range(segment_length)]
 
 def genetic_algorithm():
     population = [Chromosome() for _ in range(population_size)]
