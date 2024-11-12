@@ -2,33 +2,33 @@ import numpy as np
 import random
 
 def get_user_input():
-    grid_size=int(input("Enter the grid size : "))
-    start_x=int(input("Enter the start position X : "))
-    start_y=int(input("Enter the start position Y : "))
-    goal_x=int(input("Enter the goal position X : "))
-    goal_y=int(input("Enter the goal position Y : "))
-    obstacle_ratio=float(input("Enter obstacle ratio From 0.0 till 0.99: "))
-
-    start=(start_x,start_y)
-    goal=(goal_x,goal_y)
-    return start, goal, grid_size, obstacle_ratio
+    while True:
+        try:
+            grid_size = int(input("Enter the grid size: "))
+            start_x = int(input("Enter the start position X: "))
+            start_y = int(input("Enter the start position Y: "))
+            goal_x = int(input("Enter the goal position X: "))
+            goal_y = int(input("Enter the goal position Y: "))
+            obstacle_ratio = float(input("Enter obstacle ratio (0.0 to 0.99): "))
+            
+            start = (start_x, start_y)
+            goal = (goal_x, goal_y)
+            
+            if not (0 <= start[0] < grid_size and 0 <= start[1] < grid_size):
+                print("Invalid start coordinates, try again.")
+            elif not (0 <= goal[0] < grid_size and 0 <= goal[1] < grid_size):
+                print("Invalid goal coordinates, try again.")
+            elif not (0.0 <= obstacle_ratio <= 0.99):
+                print("Invalid obstacle ratio, try again.")
+            else:
+                return start, goal, grid_size, obstacle_ratio
+        except ValueError:
+            print("Invalid input type, please enter integers for positions and a float for the ratio.")
 
 start, goal, grid_size, obstacle_ratio = get_user_input()
 
-if not(0<=start[0]<grid_size and 0<=start[1]<grid_size):
-    print("Sorry You Entered a wrong start coordinates, try Agin \n")
-    get_user_input()
-if not(0<=goal[0]<grid_size and 0<=goal[1]<grid_size):
-    print("Sorry You Entered a wrong Goal coordinates, try Agin \n")
-    get_user_input()
-if not(0.0<=obstacle_ratio <=0.99):
-    print("Sorry You Entered a wrong Obstacle Ratio, try Agin \n")
-    get_user_input()
-
 def get_fitness(individual):
     return individual.fitness
-def get_chromosome_fitness(chromosome):
-    return chromosome.fitness
 
 def selection(population):
     def condition(individual):
@@ -66,24 +66,27 @@ class Chromosome:
             x,y=x+move[0],y+move[1]
             if not(0<=x<grid_size and 0<=y<grid_size) or grid[x][y]==1:
                 penalty+=10
-            elif (x,y)==goal:
+                break
+            if (x,y)==goal:
                 self.fitness=1/(1+penalty)
-            distance=abs(goal[0]-x)+abs(goal[1]-y)
-            self.fitness=1/(1+distance+penalty)
-
+                return
+        distance=abs(goal[0]-x)+abs(goal[1]-y)
+        self.fitness=1/(1+distance+penalty)
+        
+    @staticmethod
     def crossover(parent1,parent2):
         crossover_point=random.randint(1,len(parent1.path)-1)
         child1=Chromosome(path=parent1.path[:crossover_point] +parent2.path[crossover_point:])
         child2=Chromosome(path=parent2.path[:crossover_point] +parent1.path[crossover_point:])
         return child1,child2
 
-    def mutate(Chromosome):
+    def mutate(self):
         if random.random() < mutation_rate:
-            index=random.randint(0,len(Chromosome.path) - 1)
+            index=random.randint(0,len(self.path) - 1)
             new_move=random.choice(moves)
-            while new_move==Chromosome.path[index]:
+            while new_move==self.path[index]:
                 new_move=random.choice(moves)
-            Chromosome.path[index]=new_move
+            self.path[index]=new_move
 
 def genetic_algorithm():
     population = [Chromosome() for _ in range(population_size)]
@@ -107,7 +110,7 @@ def genetic_algorithm():
             return best_individual.path
             
         print(f"Generation {generation}: Best fitness = {best_individual.fitness}")
-    return max(population, key=get_chromosome_fitness).path
+    return max(population, key=get_fitness).path
 
 best_path = genetic_algorithm()
 print("Best path found:", best_path)
