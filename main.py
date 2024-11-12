@@ -1,5 +1,6 @@
 import numpy as np
 import random
+import math
 
 def get_user_input():
     while True:
