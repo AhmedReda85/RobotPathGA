@@ -71,7 +71,7 @@ class Chromosome:
                 self.fitness=1/(1+penalty)
                 return
         distance=abs(goal[0]-x)+abs(goal[1]-y)
-        self.fitness=1/(1+distance+penalty)
+        self.fitness=1/(1+math.exp(distance)+penalty)
         
     @staticmethod
     def crossover(parent1,parent2):
