@@ -46,9 +46,9 @@ def generate_grid(grid_size,obstacle_ratio):
 
 grid=generate_grid(grid_size,obstacle_ratio)
 moves=[(0,1),(0,-1),(1,0),(-1,0)] #up,Down,right,left Starting from (0,0).
-population_size=40
-generations=100
-mutation_rate=0.1
+population_size=90
+generations=150
+mutation_rate=0.3
 
 class Chromosome:
     def __init__(self,path=None):
