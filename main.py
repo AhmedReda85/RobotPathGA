@@ -1,6 +1,39 @@
 import numpy as np
 import random
 import math
+import matplotlib.pyplot as plt
+
+def visualize_grid(grid_size, start, goal, grid, path=None):
+    
+    fig, ax = plt.subplots(figsize=(8, 8))
+    ax.set_xticks(np.arange(0, grid_size, 1))
+    ax.set_yticks(np.arange(0, grid_size, 1))
+    ax.set_xticklabels([])
+    ax.set_yticklabels([])
+    ax.grid(which='both')
+
+    obstacles = np.where(grid == 1)
+    ax.scatter(obstacles[1], obstacles[0], color='black', label='Obstacle', s=100)
+
+    
+    ax.scatter(start[1], start[0], color='green', label='Start', s=100)
+    ax.scatter(goal[1], goal[0], color='red', label='Goal', s=100)
+
+    
+    if path:
+        path_x = [start[1]] 
+        path_y = [start[0]]
+        x, y = start
+        for move in path:
+            x, y = x + move[0], y + move[1]
+            path_x.append(y)
+            path_y.append(x)
+        ax.plot(path_x, path_y, color='blue', linewidth=2, label='Path')
+
+    ax.legend()
+    plt.gca().invert_yaxis() 
+    plt.show()
+
 
 def get_user_input():
     while True:
@@ -48,7 +81,7 @@ def generate_grid(grid_size,obstacle_ratio):
 grid=generate_grid(grid_size,obstacle_ratio)
 moves=[(0,1),(0,-1),(1,0),(-1,0)] #up,Down,right,left Starting from (0,0).
 population_size=100
-generations=150
+generations=600
 mutation_rate=0.4
 
 class Chromosome:
@@ -114,3 +147,5 @@ def genetic_algorithm():
 
 best_path = genetic_algorithm()
 print("Best path found:", best_path)
+
+visualize_grid(grid_size, start, goal, grid, best_path)
