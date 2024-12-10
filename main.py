@@ -54,7 +54,7 @@ mutation_rate=0.4
 class Chromosome:
     def __init__(self,path=None):
         if(path is None):
-            path=[random.choice(moves) for _ in range (20)]
+            path=[random.choice(moves) for _ in range (50)]
             self.path=path
         else:
             self.path=path
